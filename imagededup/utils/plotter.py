@@ -67,8 +67,9 @@ def _plot_images(
 
     if outfile:
         plt.savefig(outfile)
-
-    plt.show()
+    else:
+        plt.show()
+        
     plt.close()
 
 
