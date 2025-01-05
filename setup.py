@@ -1,3 +1,4 @@
+import os
 import sys
 from setuptools import setup, find_packages, Extension
 
@@ -18,7 +19,7 @@ functionality provided by the package:
 
 Read the documentation at: https://idealo.github.io/imagededup/
 
-imagededup is compatible with Python 3.8+ and runs on Linux, MacOS X and Windows. 
+imagededup is compatible with Python 3.8+ and runs on Linux, MacOS X and Windows.
 It is distributed under the Apache 2.0 license.
 '''
 
@@ -42,6 +43,10 @@ COMPILE_LINK_ARGS = ['-O3', '-march=native', '-mtune=native']
 # On Mac, use libc++ because Apple deprecated use of libstdc
 COMPILE_ARGS_OSX = ['-stdlib=libc++']
 LINK_ARGS_OSX = ['-lc++', '-nodefaultlibs']
+
+# workaround for Cython generated cpp code being compiled with CC,
+# not CXX. it causes compilation error with clang/llvm from nixpkgs
+os.environ["CC"] = "clang++"
 
 ext_modules = []
 if use_cython and on_mac:
@@ -89,7 +94,7 @@ else:
 
 setup(
     name='imagededup',
-    version='0.3.2',
+    version='0.3.3',
     author='Tanuj Jain, Christopher Lennan, Zubin John, Dat Tran',
     author_email='tanuj.jain.10@gmail.com, christopherlennan@gmail.com, zrjohn@yahoo.com, datitran@gmail.com',
     description='Package for image deduplication',
@@ -102,7 +107,8 @@ setup(
         'tqdm',
         'scikit-learn',
         'PyWavelets',
-        'matplotlib'
+        'matplotlib',
+        'pi-heif'
     ],
     extras_require={
         'tests': ['pytest', 'pytest-cov', 'pytest-mock', 'codecov'],

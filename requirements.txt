@@ -5,5 +5,6 @@ tqdm
 scikit-learn
 PyWavelets
 matplotlib
+pi-heif
 # Development dependencies
 cython>=0.29
